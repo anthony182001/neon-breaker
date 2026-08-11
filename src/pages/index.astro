@@ -1,11 +1,22 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import GameCanvas from '../components/GameCanvas.astro';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Neon Block 🇪🇨 | JP Zone">
+  <header class="text-center mb-6">
+    <div class="inline-flex items-center gap-2 px-3 py-1 bg-yellow-400 text-black font-extrabold text-xs tracking-widest uppercase font-mono rounded mb-2 shadow-lg shadow-yellow-400/20">
+      ⚠️ ZONA DE CONSTRUCCIÓN ⚠️
+    </div>
+    <h1 class="text-4xl sm:text-5xl font-black text-yellow-400 tracking-wider font-mono">
+      NEON BLOCK 🇪🇨
+    </h1>
+    <p class="text-zinc-400 text-xs sm:text-sm font-mono mt-1">
+      Demuele la barrera tricolor antes de que la bola caiga
+    </p>
+  </header>
+
+  <main class="w-full max-w-4xl flex justify-center">
+    <GameCanvas />
+  </main>
 </Layout>

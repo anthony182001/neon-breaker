@@ -1,0 +1,74 @@
+---
+// src/components/Leaderboard.astro
+---
+<div class="w-full lg:w-72 bg-zinc-950/90 border border-yellow-500/30 rounded-2xl p-5 font-mono shadow-lg">
+  <h4 class="text-yellow-400 text-center font-black mb-4 pb-3 border-b border-yellow-500/20 flex items-center justify-center gap-2 tracking-wider">
+    ⚠️ TOP OPERADORES
+  </h4>
+  <ul id="leaderboard-list" class="space-y-2 text-sm text-zinc-300">
+    <li class="text-center text-zinc-600 py-4">Cargando datos...</li>
+  </ul>
+</div>
+
+<script>
+  async function fetchLeaderboard() {
+    const leaderboardList = document.getElementById('leaderboard-list');
+    try {
+      // 1. Llamar al endpoint /api/leaderboard que conecta con Turso
+      const res = await fetch('/api/leaderboard');
+      
+      if (!res.ok) throw new Error('Error al consultar el ranking');
+      
+      const data = await res.json();
+
+      if (!leaderboardList) return;
+
+      // 2. Si no hay puntuaciones todavía
+      if (!Array.isArray(data) || data.length === 0) {
+        leaderboardList.innerHTML = `
+          <li class="text-center text-zinc-500 py-4 text-xs">
+            Aún no hay puntuaciones registradas.<br/>¡Sé el primero en jugar!
+          </li>
+        `;
+        return;
+      }
+
+      // 3. Renderizar el Top 10
+      leaderboardList.innerHTML = data.map((item: any, idx: number) => {
+        const isTop1 = idx === 0;
+        const isTop3 = idx < 3;
+        const badgeColor = isTop1 ? 'text-yellow-400' : isTop3 ? 'text-amber-200' : 'text-zinc-500';
+
+        return `
+          <li class="flex justify-between items-center py-2 px-2.5 border-b border-zinc-800/80 rounded hover:bg-zinc-900/50 transition">
+            <div class="flex items-center gap-2 overflow-hidden mr-2">
+              <span class="font-bold text-xs ${badgeColor}">${idx + 1}.</span>
+              <span class="truncate ${isTop1 ? 'text-yellow-400 font-bold' : 'text-zinc-200'}" title="${item.name}">${item.name}</span>
+            </div>
+            <div class="text-right flex-shrink-0">
+              <span class="text-yellow-400 font-bold block leading-none">${item.max_score}</span>
+              ${item.max_level ? `<span class="text-[10px] text-zinc-500 font-mono">Niv. ${item.max_level}</span>` : ''}
+            </div>
+          </li>
+        `;
+      }).join('');
+
+    } catch (e) {
+      console.error(e);
+      if (leaderboardList) {
+        leaderboardList.innerHTML = `
+          <li class="text-center text-red-400/70 py-4 text-xs">
+            Error al conectar con el servidor.
+          </li>
+        `;
+      }
+    }
+  }
+
+  // Carga inicial al cargar el componente
+  fetchLeaderboard();
+
+  // Escuchar eventos para refrescar la tabla dinámicamente
+  window.addEventListener('update-leaderboard', fetchLeaderboard);
+  window.addEventListener('session-changed', fetchLeaderboard);
+</script>
