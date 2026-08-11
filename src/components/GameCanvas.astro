@@ -4,29 +4,32 @@ import UserModal from './UserModal.astro';
 import Leaderboard from './Leaderboard.astro';
 ---
 
-<div class="w-full flex flex-col items-center gap-8 my-4">
+<div class="w-full flex flex-col items-center gap-6 sm:gap-8 my-4 px-2 sm:px-4">
   <UserModal />
 
-  <div class="w-full flex flex-col lg:flex-row gap-8 items-start justify-center max-w-5xl px-4">
+  <div class="w-full flex flex-col lg:flex-row gap-6 lg:gap-8 items-center lg:items-start justify-center max-w-5xl">
     
-    <div class="flex flex-col items-center w-full lg:w-auto">
-      <!-- Barra del Marcador con Indicador de Nivel -->
-      <div class="flex justify-between items-center w-full max-w-[500px] mb-4 px-5 py-3 bg-zinc-950/90 border border-yellow-500/30 rounded-xl text-xs sm:text-sm font-mono shadow-md">
-        <span class="text-yellow-400/90">OPERADOR: <strong id="display-player" class="text-white font-bold">---</strong></span>
-        <span class="text-yellow-400/90">NIVEL: <strong id="display-level" class="text-yellow-400 font-bold">1</strong></span>
-        <span class="text-yellow-400/90">PUNTOS: <strong id="display-score" class="text-white font-bold">0</strong></span>
-        <span class="text-yellow-400/90">VIDAS: <strong id="display-lives" class="text-white font-bold">3</strong></span>
+    <div class="flex flex-col items-center w-full max-w-[500px]">
+      <!-- Barra del Marcador con Indicador de Nivel Responsivo -->
+      <div class="flex flex-wrap sm:flex-nowrap justify-between items-center w-full mb-3 px-3 sm:px-5 py-2.5 bg-zinc-950/90 border border-yellow-500/30 rounded-xl text-[11px] sm:text-sm font-mono shadow-md gap-2">
+        <div class="flex items-center gap-2 sm:gap-4 flex-wrap">
+          <span class="text-yellow-400/90">OPERADOR: <strong id="display-player" class="text-white font-bold">---</strong></span>
+          <span class="text-yellow-400/90">NIVEL: <strong id="display-level" class="text-yellow-400 font-bold">1</strong></span>
+          <span class="text-yellow-400/90">PUNTOS: <strong id="display-score" class="text-white font-bold">0</strong></span>
+          <span class="text-yellow-400/90">VIDAS: <strong id="display-lives" class="text-white font-bold">3</strong></span>
+        </div>
         
         <button 
           id="logout-btn" 
           title="Cerrar Sesión"
-          class="text-red-400 hover:text-red-300 hover:bg-red-950/40 px-2 py-1 rounded border border-red-500/30 transition text-xs flex items-center gap-1 cursor-pointer"
+          class="text-red-400 hover:text-red-300 hover:bg-red-950/40 px-2 py-1 rounded border border-red-500/30 transition text-xs flex items-center gap-1 cursor-pointer ml-auto sm:ml-0"
         >
           <span>✕</span> Salir
         </button>
       </div>
 
-      <div class="relative max-w-[500px] w-full overflow-hidden rounded-2xl border-2 border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,0.15)] bg-black">
+      <!-- Contenedor del Canvas -->
+      <div class="relative w-full overflow-hidden rounded-2xl border-2 border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,0.15)] bg-black aspect-[5/3.6]">
         
         <!-- ESCUDO DE ECUADOR 8-BIT DE ALTA DEFINICIÓN RETRO (32x32 GRID) -->
         <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-30 select-none p-4">
@@ -102,34 +105,34 @@ import Leaderboard from './Leaderboard.astro';
           </svg>
         </div>
 
-        <!-- CANVAS DEL JUEGO (Se incluye touch-none para evitar scroll táctil) -->
+        <!-- CANVAS DEL JUEGO -->
         <canvas 
           id="breakout-canvas" 
           width="500" 
           height="360" 
-          class="relative z-10 w-full h-auto bg-transparent cursor-none block touch-none"
+          class="relative z-10 w-full h-full bg-transparent cursor-none block touch-none"
         ></canvas>
         
-        <!-- Pantalla de Transición: Nivel Completado -->
-        <div id="level-complete-screen" class="hidden absolute inset-0 z-20 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center space-y-4 p-6 text-center">
-          <div class="px-3 py-0.5 bg-green-500 text-black font-extrabold text-[10px] tracking-widest uppercase font-mono rounded animate-pulse">
+        <!-- Pantalla de Transición Responsiva: Nivel Completado -->
+        <div id="level-complete-screen" class="hidden absolute inset-0 z-20 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center space-y-2 sm:space-y-4 p-4 sm:p-6 text-center">
+          <div class="px-2.5 py-0.5 bg-green-500 text-black font-extrabold text-[9px] sm:text-[10px] tracking-widest uppercase font-mono rounded animate-pulse">
             SECTOR LIMPIADO
           </div>
           
-          <h4 class="text-2xl font-black text-green-400 font-mono">¡NIVEL COMPLETADO!</h4>
-          <p class="text-zinc-300 font-mono text-sm">Prepárate para la siguiente fase.</p>
+          <h4 class="text-xl sm:text-2xl font-black text-green-400 font-mono leading-tight">¡NIVEL COMPLETADO!</h4>
+          <p class="text-zinc-300 font-mono text-xs sm:text-sm">Prepárate para la siguiente fase.</p>
           
-          <button id="next-level-btn" class="px-8 py-3 bg-green-500 text-black font-black rounded-full hover:bg-green-400 transition duration-300 font-mono uppercase shadow-lg shadow-green-500/30 text-sm cursor-pointer">
+          <button id="next-level-btn" class="px-5 sm:px-8 py-2.5 sm:py-3 bg-green-500 text-black font-black rounded-full hover:bg-green-400 transition duration-300 font-mono uppercase shadow-lg shadow-green-500/30 text-xs sm:text-sm cursor-pointer mt-2">
             SIGUIENTE NIVEL ➔
           </button>
         </div>
 
-        <!-- Pantalla de Fin de Juego Dinámica -->
-        <div id="game-over-screen" class="hidden absolute inset-0 z-20 bg-black/95 backdrop-blur-md flex flex-col items-center justify-center space-y-4 p-6 text-center">
+        <!-- Pantalla de Fin de Juego Responsiva -->
+        <div id="game-over-screen" class="hidden absolute inset-0 z-20 bg-black/95 backdrop-blur-md flex flex-col items-center justify-center space-y-2 sm:space-y-4 p-4 sm:p-6 text-center">
           
           <!-- PERSONAJE 8-BIT: VICTORIA -->
           <div id="avatar-win" class="hidden animate-bounce">
-            <svg class="w-20 h-20 text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]" viewBox="0 0 16 16" fill="currentColor" style="image-rendering: pixelated;">
+            <svg class="w-14 h-14 sm:w-20 sm:h-20 text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]" viewBox="0 0 16 16" fill="currentColor" style="image-rendering: pixelated;">
               <rect x="3" y="1" width="2" height="2"/>
               <rect x="7" y="1" width="2" height="2"/>
               <rect x="11" y="1" width="2" height="2"/>
@@ -145,7 +148,7 @@ import Leaderboard from './Leaderboard.astro';
 
           <!-- PERSONAJE 8-BIT: DERROTA -->
           <div id="avatar-lose" class="hidden animate-pulse">
-            <svg class="w-20 h-20 text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]" viewBox="0 0 16 16" fill="currentColor" style="image-rendering: pixelated;">
+            <svg class="w-14 h-14 sm:w-20 sm:h-20 text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.8)]" viewBox="0 0 16 16" fill="currentColor" style="image-rendering: pixelated;">
               <rect x="4" y="1" width="8" height="2"/>
               <rect x="2" y="3" width="12" height="8"/>
               <rect x="4" y="5" width="1" height="1" fill="#000"/>
@@ -165,14 +168,14 @@ import Leaderboard from './Leaderboard.astro';
             </svg>
           </div>
 
-          <div id="game-status-badge" class="px-3 py-0.5 bg-yellow-400 text-black font-extrabold text-[10px] tracking-widest uppercase font-mono rounded">
+          <div id="game-status-badge" class="px-2.5 py-0.5 bg-yellow-400 text-black font-extrabold text-[9px] sm:text-[10px] tracking-widest uppercase font-mono rounded">
             ESTADO DE MISIÓN
           </div>
           
-          <h4 id="game-status-title" class="text-2xl font-black text-yellow-400 font-mono">PELIGRO CRÍTICO</h4>
-          <p class="text-zinc-400 font-mono text-sm">Puntaje Final: <span id="final-score" class="text-yellow-400 font-bold text-lg">0</span></p>
+          <h4 id="game-status-title" class="text-xl sm:text-2xl font-black text-yellow-400 font-mono leading-tight">PELIGRO CRÍTICO</h4>
+          <p class="text-zinc-400 font-mono text-xs sm:text-sm">Puntaje Final: <span id="final-score" class="text-yellow-400 font-bold text-base sm:text-lg">0</span></p>
           
-          <button id="restart-btn" class="px-8 py-3 bg-yellow-400 text-black font-black rounded-full hover:bg-yellow-300 transition duration-300 font-mono uppercase shadow-lg shadow-yellow-400/30 text-sm cursor-pointer">
+          <button id="restart-btn" class="px-6 sm:px-8 py-2.5 sm:py-3 bg-yellow-400 text-black font-black rounded-full hover:bg-yellow-300 transition duration-300 font-mono uppercase shadow-lg shadow-yellow-400/30 text-xs sm:text-sm cursor-pointer mt-2">
             REINTENTAR
           </button>
         </div>
@@ -210,7 +213,6 @@ import Leaderboard from './Leaderboard.astro';
       finalScoreText: document.getElementById('final-score'),
       getPlayerName: () => localStorage.getItem('breakout_player_name') || 'ANÓNIMO',
       onScoreSave: async (score, levelReached) => {
-        // Pasa el score y el nivel alcanzado a Turso
         await savePlayerScore(score, levelReached);
       }
     });
@@ -242,7 +244,6 @@ import Leaderboard from './Leaderboard.astro';
       observer.observe(gameOverScreen, { attributes: true, attributeFilter: ['class'] });
     }
 
-    // Event listeners de interacción
     nextLevelBtn?.addEventListener('click', () => {
       game.nextLevel();
     });
