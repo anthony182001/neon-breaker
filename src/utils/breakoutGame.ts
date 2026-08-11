@@ -151,14 +151,12 @@ export class BreakoutGame {
   }
 
   private initEvents() {
-    // Control con Mouse
-    document.addEventListener('mousemove', (e) => {
-      const rect = this.canvas.getBoundingClientRect();
-      const relativeX = e.clientX - rect.left;
-      if (relativeX > 0 && relativeX < this.canvas.width) {
-        this.paddleX = relativeX - this.paddleWidth / 2;
-      }
-    });
+    // 🖱️ Evento de Mouse con escalado
+    this.canvas.addEventListener('mousemove', this.handleMouseMove);
+
+    // 📱 Eventos Táctiles para Móviles
+    this.canvas.addEventListener('touchstart', this.handleTouch, { passive: false });
+    this.canvas.addEventListener('touchmove', this.handleTouch, { passive: false });
 
     // ⌨️ Eventos de Teclado (Presionar)
     document.addEventListener('keydown', (e) => {
@@ -178,6 +176,35 @@ export class BreakoutGame {
       }
     });
   }
+
+  // 🖱️ Handler del Mouse con escala
+  private handleMouseMove = (e: MouseEvent) => {
+    const rect = this.canvas.getBoundingClientRect();
+    const scaleX = this.canvas.width / rect.width;
+    const relativeX = (e.clientX - rect.left) * scaleX;
+
+    this.paddleX = Math.max(
+      0,
+      Math.min(relativeX - this.paddleWidth / 2, this.canvas.width - this.paddleWidth)
+    );
+  };
+
+  // 📱 Handler Táctil (Móvil)
+  private handleTouch = (e: TouchEvent) => {
+    if (e.cancelable) e.preventDefault();
+
+    if (e.touches.length > 0) {
+      const touch = e.touches[0];
+      const rect = this.canvas.getBoundingClientRect();
+      const scaleX = this.canvas.width / rect.width;
+      const relativeX = (touch.clientX - rect.left) * scaleX;
+
+      this.paddleX = Math.max(
+        0,
+        Math.min(relativeX - this.paddleWidth / 2, this.canvas.width - this.paddleWidth)
+      );
+    }
+  };
 
   private loadLevel(levelIndex: number) {
     if (this.displayLevel) {

@@ -102,12 +102,12 @@ import Leaderboard from './Leaderboard.astro';
           </svg>
         </div>
 
-        <!-- CANVAS DEL JUEGO -->
+        <!-- CANVAS DEL JUEGO (Se incluye touch-none para evitar scroll táctil) -->
         <canvas 
           id="breakout-canvas" 
           width="500" 
           height="360" 
-          class="relative z-10 w-full bg-transparent cursor-none block"
+          class="relative z-10 w-full h-auto bg-transparent cursor-none block touch-none"
         ></canvas>
         
         <!-- Pantalla de Transición: Nivel Completado -->
