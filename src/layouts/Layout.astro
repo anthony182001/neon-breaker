@@ -1,4 +1,5 @@
 ---
+// src/layouts/Layout.astro
 import '../styles/global.css';
 
 interface Props {
@@ -16,7 +17,42 @@ const { title = "Neon Breakout | Juego Retro" } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
   </head>
-  <body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col items-center justify-center p-4">
-    <slot />
+  <body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between items-center selection:bg-yellow-400 selection:text-black">
+    
+    <!-- CONTENIDO PRINCIPAL (Juego) -->
+    <main class="w-full flex-grow flex flex-col items-center justify-center p-4">
+      <slot />
+    </main>
+
+    <!-- FOOTER RESPONSIVO Y ESTILIZADO -->
+    <footer class="w-full py-4 px-6 bg-slate-950/90 border-t border-yellow-500/20 backdrop-blur-md text-xs font-mono text-slate-400">
+      <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5">
+        
+        <!-- Nombre, Símbolo Dev y Autor -->
+        <div class="flex items-center gap-2">
+          <!-- Símbolo </JP> estilo badge neón -->
+          <span class="px-1.5 py-0.5 bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 rounded font-mono font-bold text-[11px] tracking-tight">
+            &lt;/JP&gt;
+          </span>
+          <span>Desarrollado por</span>
+          <strong class="text-yellow-400 font-bold">Josué Pérez</strong>
+          <span class="text-slate-600">|</span>
+          <span class="text-slate-500">© {new Date().getFullYear()}</span>
+        </div>
+
+        <!-- Correo de Contacto -->
+        <div class="flex items-center gap-2">
+          <span class="text-slate-500">Contacto:</span>
+          <a 
+            href="mailto:josper201@gmail.com" 
+            class="text-slate-300 hover:text-yellow-400 transition-colors duration-200 underline underline-offset-4 decoration-yellow-500/40 hover:decoration-yellow-400"
+          >
+            josper201@gmail.com
+          </a>
+        </div>
+
+      </div>
+    </footer>
+
   </body>
 </html>
