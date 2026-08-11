@@ -106,7 +106,7 @@ export class BreakoutGame {
   private animationFrameId: number | null = null;
 
   private paddleHeight = 10;
-  private paddleWidth = 200;
+  private paddleWidth = 90;
   private paddleX: number;
   private paddleSpeed = 7; // 🏃 Velocidad de desplazamiento con teclado
 
